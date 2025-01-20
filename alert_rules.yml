@@ -1,0 +1,11 @@
+groups:
+  - name: example_alerts
+    rules:
+      - alert: ExampleMetricTooHigh
+        expr: example_metric > 0
+        for: 30s
+        labels:
+          severity: warning
+        annotations:
+          summary: "High example_metric value detected"
+          description: "The value of example_metric is above 100. Current value: {{ $value }}"
