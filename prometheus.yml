@@ -30,3 +30,16 @@ scrape_configs:
   - job_name: 'python-metrics'
     static_configs:
         - targets: [ 'host.docker.internal:8080' ]
+
+
+
+          s3://qaecm-network-visibility-dms-pg-to-redshift-qa4/hacker_h_bhai_hacker_h/date_hour=2025-02-05 00:00:00/network_id=01H4SEHY8B1M54PRX4RB0DBEEY/0000_part_00.parquet
+          
+          explain select flow_id from read_parquet('s3://qaecm-network-visibility-dms-pg-to-redshift-qa4/hacker_h_bhai_hacker_h/**') where date_hour between '2025-02-05 00:05' and '2025-02-05 00:10';
+          
+          
+          select created_at, date_hour from read_parquet('s3://qaecm-network-visibility-dms-pg-to-redshift-qa4/hacker_h_bhai_hacker_h/date_hour=2025-02-05 00:00:00/network_id=01H4SEHY8B1M54PRX4RB0DBEEY/*.parquet');
+          
+          explain select created_At from read_parquet('s3://qaecm-network-visibility-dms-pg-to-redshift-qa4/hacker_h_bhai_hacker_h/**') where date_hour between '2025-02-05 00:05' and '2025-02-05 12:10' and created_at between '2025-02-05 05:0:22' and '2025-02-05 07:0:22';
+
+        explain select created_At, network_id from read_parquet('s3://qaecm-network-visibility-dms-pg-to-redshift-qa4/hacker_h_bhai_hacker_h/**') where date_hour between '2025-02-05 05:0:22' and '2025-02-07 07:0:22' and created_at between '2025-02-05 05:0:22' and '2025-02-07 07:0:22';
