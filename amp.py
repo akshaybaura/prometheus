@@ -125,19 +125,15 @@ class PrometheusQueryClient:
     def write_metric(self, metric_name, value, labels={}):
         timestamp = int(time.time() * 1000)
 
-        # Create Protobuf WriteRequest
         write_request = metrics_pb2.WriteRequest()
         ts = write_request.timeseries.add()
         ts.labels.add(name="__name__", value=metric_name)
 
-        # Add additional labels
         for k, v in labels.items():
             ts.labels.add(name=k, value=v)
 
-        # Add sample value with timestamp
         ts.samples.add(value=value, timestamp=timestamp)
 
-        # Serialize the request and compress with Snappy
         protobuf_data = write_request.SerializeToString()
         compressed_data = snappy.compress(protobuf_data)
 
@@ -146,7 +142,6 @@ class PrometheusQueryClient:
             'Content-Type': 'application/x-protobuf'
         }
 
-        # Perform the AWS SigV4 signed request
         response = requests.post(
             self.write_endpoint,
             data=compressed_data,
@@ -155,9 +150,9 @@ class PrometheusQueryClient:
         )
 
         if response.status_code == 200:
-            print(f"✅ Successfully wrote metric: {metric_name}={value}")
+            print(f"Successfully wrote metric: {metric_name}={value}")
         else:
-            print(f"❌ Failed to write metric: {response.status_code} - {response.text}")
+            print(f"Failed to write metric: {response.status_code} - {response.text}")
 
     def simulate_real_metrics(self):
         metrics = [
